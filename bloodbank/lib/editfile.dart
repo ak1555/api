@@ -5,14 +5,14 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 // import 'package:shared_preferences/shared_preferences.dart';
 import 'package:image_picker/image_picker.dart';
-class AddFile extends StatefulWidget {
-  const AddFile({super.key});
+class EditFile extends StatefulWidget {
+  const EditFile({super.key});
 
   @override
-  State<AddFile> createState() => _AddFileState();
+  State<EditFile> createState() => _EditFileState();
 }
 
-class _AddFileState extends State<AddFile> {
+class _EditFileState extends State<EditFile> {
 TextEditingController c1= TextEditingController();
 TextEditingController c3= TextEditingController();
 TextEditingController c4= TextEditingController();
@@ -35,7 +35,7 @@ final List<String>ls=[
 ];
  String? seletedgroup;
 
-
+String? dt;
 ImagePicker _picker=ImagePicker();
 File? _image;
 bool img=false;
@@ -44,103 +44,34 @@ bool chkbx=false;
 List sharedprefslist=[];
 Map<dynamic,dynamic> mp={};
 
-void save() async{
-                mp={
+                void edit() async{
+
+                   mp={
                         "name":c1.text,
                         "phone":c3.text,
                         "place":c4.text,
                         "blood_group":seletedgroup.toString(),
                         "dob":c5.text,
                         };
-                        var res=await http.post(
-                          Uri.parse('http://jandk.tech/api/adddonor'),
-                          headers: {
-                            "Content-Type":"application/json"
-                          },
-                          body: json.encode(mp)
-                          );
-                          print(res.statusCode);
-                        
-}
-// void pickimage() async{
-// final pickedfile=await _picker.pickImage(source: ImageSource.gallery);
-// setState(() {
-//   _image=File(pickedfile!.path);
-//   img=true;
-// });
-// img=true;
-// }
-
-// Future< void >savedata()async{
-//   final prefs=await SharedPreferences.getInstance();
-//   final res=prefs.getString("bloodbank");
-
-//   final bytes=await _image!.readAsBytes();
-//   final base64img=base64Encode(bytes);
-//   if(res!=null){
-//     sharedprefslist=json.decode(res);
-    
-//      try{
-//  mp={
-//         "name":c1.text,
-//         "email":c2.text,
-//         "phone":c3.text,
-//         "place":c4.text,
-//         "dob":c5.text,
-//         "group":seletedgroup.toString(),
-//         "image":base64img
-//       };
-//      }catch(e){
-//  mp={
-//         "name":c1.text,
-//         "email":c2.text,
-//         "phone":c3.text,
-//         "place":c4.text,
-//         "dob":c5.text,
-//          "group":seletedgroup.toString(),
-//         "image":null
-//       };
-//      }
-//       sharedprefslist.add(mp);
-//       prefs.setString("bloodbank", jsonEncode(sharedprefslist));
-    
-//   }else{
-//      try{
-//  mp={
-//         "name":c1.text,
-//         "email":c2.text,
-//         "phone":c3.text,
-//         "place":c4.text,
-//         "dob":c5.text,
-//          "group":seletedgroup.toString(),
-//         "image":base64img
-//       };
-//      }catch(e){
-//  mp={
-//         "name":c1.text,
-//         "email":c2.text,
-//         "phone":c3.text,
-//         "place":c4.text,
-//         "dob":c5.text,
-//          "group":seletedgroup.toString(),
-//         "image":null
-//       };
-//      }
-//       sharedprefslist.add(mp);
-//       prefs.setString("bloodbank", jsonEncode(sharedprefslist));
-    
-//   }
-  
-// }
-
-
-
-
+                  print(dt.toString());
+                  // try{
+                  final res=await http.put(
+                    Uri.parse('http://jandk.tech/api/getdonor/${dt.toString()}'),
+                    // headers: { "Content-Type":"application/json"},
+                    body: json.encode(mp)
+                  );
+                  // }catch(e){
+                    // print(e);
+                  // }
+                  // final res=await http.put(Uri.parse('http://jandk.tech/api/getdonor/$dt'));
+                    print(res.body);
+                }
 
 
 
   @override
   Widget build(BuildContext context) {
+     dt=ModalRoute.of(context)?.settings.arguments as String;
     return Scaffold(
       body: Container(
         height: MediaQuery.of(context).size.height,
@@ -233,40 +164,6 @@ void save() async{
                     ))),
                   ),
                   // ---------------------------------- fullname ^
-                  //  Container(
-                  //   height: 50,
-                  //   // width: double.infinity,
-                  //   margin: EdgeInsets.only(left: 20),
-                  //   alignment: Alignment.centerLeft,
-                  //   child: Text("Email"),
-                  // ),
-                  //  Container(
-                  //   height: 50,
-                  //   // width: double.infinity,
-                  //   margin: EdgeInsets.only(left: 20,right: 20),
-                  //   padding: EdgeInsets.only(left: 15,right: 15),
-                  //   alignment: Alignment.centerLeft,
-                  //   decoration: BoxDecoration(border: Border.all(width: .1),
-                  //    boxShadow: [
-                  //     BoxShadow(
-                  //       color: Colors.grey,
-                  //       blurRadius: 10,
-                  //       spreadRadius: 1,
-                  //       blurStyle: BlurStyle.outer,
-                  //     )
-                  //   ],
-                  //   borderRadius: BorderRadius.circular(10),),
-                  //   child: Expanded(child: Expanded(child: TextField(
-                  //     controller: c2,
-                  //     keyboardType: TextInputType.emailAddress,
-                  //     decoration: InputDecoration(
-                  //       hintText: "Email",
-                  //       border: InputBorder.none,
-                  //       hoverColor: Colors.red
-                  //     ),
-                  //   ))),
-                  // ),
-                  // ---------------------------------- email ^
                    Container(
                     height: 50,
                     // width: double.infinity,
@@ -435,43 +332,7 @@ void save() async{
 SizedBox(height: 3),
 Row(
   children: [
-    // Column(
-    //    children: [
-    //      Container(
-    //                         height: 40,
-    //                         width: 130,
-    //                         margin: EdgeInsets.only(left: 20),
-    //                         alignment: Alignment.centerLeft,
-    //                         child: Text("Weight"),
-    //                       ),
-    //                        Container(
-    //                         height: 50,
-    //                         width: 130,
-    //                         margin: EdgeInsets.only(left: 20,right: 20),
-    //                         padding: EdgeInsets.only(left: 15,right: 15),
-    //                         alignment: Alignment.centerLeft,
-    //                         decoration: BoxDecoration(border: Border.all(width: .1),
-    //                          boxShadow: [
-    //                           BoxShadow(
-    //                             color: Colors.grey,
-    //                             blurRadius: 10,
-    //                             spreadRadius: 1,
-    //                             blurStyle: BlurStyle.outer,
-    //                           )
-    //                         ],
-    //                         borderRadius: BorderRadius.circular(10),),
-    //                         child: Expanded(child: Expanded(child: TextField(
-    //                           controller: c6,
-    //                            keyboardType: TextInputType.number,
-    //                           decoration: InputDecoration(
-    //                             hintText: "Weight",
-    //                             border: InputBorder.none,
-    //                             hoverColor: Colors.red
-    //                           ),
-    //                         ))),
-    //                       ),
-    //    ],
-    //  ),
+
      Column(
        children: [
          Container(
@@ -512,43 +373,6 @@ Row(
   ],
 ),
 
-
-
-                    // ---------------------------------- blood group ^
-                  //       Container(
-                  //   height: 50,
-                  //   // width: double.infinity,
-                  //   margin: EdgeInsets.only(left: 20),
-                  //   alignment: Alignment.centerLeft,
-                  //   child: Text("Location"),
-                  // ),
-                  //  Container(
-                  //   height: 50,
-                  //   // width: double.infinity,
-                  //   margin: EdgeInsets.only(left: 20,right: 20),
-                  //   padding: EdgeInsets.only(left: 15,right: 15),
-                  //   alignment: Alignment.centerLeft,
-                  //   decoration: BoxDecoration(border: Border.all(width: .1),
-                  //    boxShadow: [
-                  //     BoxShadow(
-                  //       color: Colors.grey,
-                  //       blurRadius: 10,
-                  //       spreadRadius: 1,
-                  //       blurStyle: BlurStyle.outer,
-                  //     )
-                  //   ],
-                  //   borderRadius: BorderRadius.circular(10),),
-                  //   child: Expanded(child: Expanded(child: TextField(
-                  //     controller: c8,
-                  //      keyboardType: TextInputType.text,
-                  //     decoration: InputDecoration(
-                  //       hintText: "location",
-                  //       border: InputBorder.none,
-                  //       hoverColor: Colors.red
-                  //     ),
-                  //   ))),
-                  // ),
-                    // ---------------------------------- DOB ^
                     // =================================== checkbox v
                     SizedBox(height: 10,),
                     Row(
@@ -578,83 +402,58 @@ Row(
                             
                           ),
                           onPressed: () {
-                            int agee=int.parse(c7.text);
-                              if(chkbx==true){
-                              if(agee>=18){
+                            edit();
+//                             int agee=int.parse(c7.text);
+//                               if(chkbx==true){
+//                               if(agee>=18){
                               
-                                // if(_image!=null){
-                                  // if(weii>=45){
-                                    if(c1.text!=null&&c3.text!=null){
-                                        // savedata();
-                                        save();
-print("KKKKKKKKKKKKKKKKKKKKKKKK");
-                                        Navigator.pop(context);
-                                    }else{
-                                      showDialog(context: context, builder: (context) {
-                                  return AlertDialog(
-                                    title: Text("OOPS!!!"),
-                                    content: Text("All Input Fields Must Want to Fill...."),
-                                    actions: [
-                                      TextButton(onPressed: () {
-                                        Navigator.pop(context);
-                                      }, child: Text("OK"))
-                                    ],
-                                  );
-                                },);
-                                    }
-                                //   }else{
-                                //      showDialog(context: context, builder: (context) {
-                                //   return AlertDialog(
-                                //     title: Text("OOPS!!!"),
-                                //     content: Text("Your Weight Is Too LESS...."),
-                                //     actions: [
-                                //       TextButton(onPressed: () {
-                                //         Navigator.pop(context);
-                                //       }, child: Text("OK"))
-                                //     ],
-                                //   );
-                                // },);
-                                //   }
-                                // }else{
-                                //   showDialog(context: context, builder: (context) {
-                                //   return AlertDialog(
-                                //     title: Text("SORRY!!!"),
-                                //     content: Text("Image Is Mandotory...."),
-                                //     actions: [
-                                //       TextButton(onPressed: () {
-                                //         Navigator.pop(context);
-                                //       }, child: Text("OK"))
-                                //     ],
-                                //   );
-                                // },);
-                                // }
+//                                 // if(_image!=null){
+//                                   // if(weii>=45){
+//                                     if(c1.text!=null&&c3.text!=null){
+//                                         // savedata();
+//                                         edit();
+// print("KKKKKKKKKKKKK");
+//                                         Navigator.pop(context);
+//                                     }else{
+//                                       showDialog(context: context, builder: (context) {
+//                                   return AlertDialog(
+//                                     title: Text("OOPS!!!"),
+//                                     content: Text("All Input Fields Must Want to Fill...."),
+//                                     actions: [
+//                                       TextButton(onPressed: () {
+//                                         Navigator.pop(context);
+//                                       }, child: Text("OK"))
+//                                     ],
+//                                   );
+//                                 },);
+//                                     }
 
-                              }else{
-                                showDialog(context: context, builder: (context) {
-                                  return AlertDialog(
-                                    title: Text("OOPS!!!"),
-                                    content: Text("You Must Above 18.."),
-                                    actions: [
-                                      TextButton(onPressed: () {
-                                        Navigator.pop(context);
-                                      }, child: Text("OK"))
-                                    ],
-                                  );
-                                },);
-                              }}
-                              else{
-                                 showDialog(context: context, builder: (context) {
-                                  return AlertDialog(
-                                    title: Text("OOPS!!!"),
-                                    content: Text("You Must Agree the Terms & Conditions..."),
-                                    actions: [
-                                      TextButton(onPressed: () {
-                                        Navigator.pop(context);
-                                      }, child: Text("OK"))
-                                    ],
-                                  );
-                                },);
-                              }
+//                               }else{
+//                                 showDialog(context: context, builder: (context) {
+//                                   return AlertDialog(
+//                                     title: Text("OOPS!!!"),
+//                                     content: Text("You Must Above 18.."),
+//                                     actions: [
+//                                       TextButton(onPressed: () {
+//                                         Navigator.pop(context);
+//                                       }, child: Text("OK"))
+//                                     ],
+//                                   );
+//                                 },);
+//                               }}
+//                               else{
+//                                  showDialog(context: context, builder: (context) {
+//                                   return AlertDialog(
+//                                     title: Text("OOPS!!!"),
+//                                     content: Text("You Must Agree the Terms & Conditions..."),
+//                                     actions: [
+//                                       TextButton(onPressed: () {
+//                                         Navigator.pop(context);
+//                                       }, child: Text("OK"))
+//                                     ],
+//                                   );
+//                                 },);
+//                               }
 
 
                           // savedata();

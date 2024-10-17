@@ -1,5 +1,6 @@
 import 'package:bloodbank/addfile.dart';
 import 'package:bloodbank/details.dart';
+import 'package:bloodbank/editfile.dart';
 import 'package:bloodbank/homepage.dart';
 import 'package:bloodbank/specific.dart';
 import 'package:bloodbank/splash.dart';
@@ -17,6 +18,7 @@ void main(){
         "/addfile":(context)=>AddFile(),
         "/homepage":(context)=>HomePage(),
         "/details1":(context)=>Details1(),
+        "editfile":(context)=>EditFile()
       },
     )
   );

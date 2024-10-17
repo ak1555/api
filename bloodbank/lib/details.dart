@@ -176,9 +176,18 @@ void getdata()async{
                             child: Center(child: Text(data[index]["blood_group"],style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18,
                             color: Colors.white,shadows: [Shadow(color: const Color.fromARGB(255, 255, 255, 255),blurRadius: 5,offset: Offset(1, 1))]),),),
                             
-                            )
-                          ],),
+                            ),
+                             Container(
+                          height: 50,
+                          width: 50,
+                          child: IconButton(onPressed: () {
+                            String argu=data[index]["_id"].toString();
+                            Navigator.pushNamed(context, "editfile",arguments: argu.toString());
+                          }, icon: Icon(Icons.edit)),
                          )
+                          ],),
+                         ),
+                        
                       ],
                     ),
                   ),
