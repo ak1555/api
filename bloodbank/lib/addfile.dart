@@ -51,6 +51,7 @@ void save() async{
                         "place":c4.text,
                         "blood_group":seletedgroup.toString(),
                         "dob":c5.text,
+                        "age":c7.text
                         };
                         var res=await http.post(
                           Uri.parse('http://jandk.tech/api/adddonor'),

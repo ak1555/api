@@ -43,10 +43,31 @@ bool img=false;
 bool chkbx=false;
 List sharedprefslist=[];
 Map<dynamic,dynamic> mp={};
+//  String? res;
 
                 void edit() async{
+                  print(dt.toString());
+                   final  res=await http.get(Uri.parse('http://jandk.tech/api/getdonor/$dt'));
+                if(dt!=null){
+                  final  res=await http.get(Uri.parse('http://jandk.tech/api/getdonor/$dt'));
+               mp = json.decode(res.body);
+                    print(mp);
+                    setState(() {
+                      c1.text=mp["name"];
+                      c3.text=mp["phone"].toString();
+                      c4.text=mp["place"];
+                      c5.text=mp["dob"].toString();
+                      c7.text=mp["age"].toString();
+                      seletedgroup=mp["blood_group"];
+                    });
+                }
+                }
 
-                   mp={
+
+
+                      void edt() async{
+
+                 Map  mmp={
                         "name":c1.text,
                         "phone":c3.text,
                         "place":c4.text,
@@ -56,16 +77,23 @@ Map<dynamic,dynamic> mp={};
                   print(dt.toString());
                   // try{
                   final res=await http.put(
-                    Uri.parse('http://jandk.tech/api/getdonor/${dt.toString()}'),
-                    // headers: { "Content-Type":"application/json"},
-                    body: json.encode(mp)
+                    Uri.parse('http://jandk.tech/api/editdonor/$dt'),
+                    headers: { "Content-Type":"application/json"},
+                    body: json.encode(mmp)
                   );
-                  // }catch(e){
-                    // print(e);
-                  // }
-                  // final res=await http.put(Uri.parse('http://jandk.tech/api/getdonor/$dt'));
+
                     print(res.body);
                 }
+
+
+
+
+                @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    edit();
+  }
 
 
 
@@ -402,58 +430,59 @@ Row(
                             
                           ),
                           onPressed: () {
-                            edit();
-//                             int agee=int.parse(c7.text);
-//                               if(chkbx==true){
-//                               if(agee>=18){
+                            // edit();
+                            int agee=int.parse(c7.text);
+                              if(chkbx==true){
+                              if(agee>=18){
                               
-//                                 // if(_image!=null){
-//                                   // if(weii>=45){
-//                                     if(c1.text!=null&&c3.text!=null){
-//                                         // savedata();
-//                                         edit();
-// print("KKKKKKKKKKKKK");
-//                                         Navigator.pop(context);
-//                                     }else{
-//                                       showDialog(context: context, builder: (context) {
-//                                   return AlertDialog(
-//                                     title: Text("OOPS!!!"),
-//                                     content: Text("All Input Fields Must Want to Fill...."),
-//                                     actions: [
-//                                       TextButton(onPressed: () {
-//                                         Navigator.pop(context);
-//                                       }, child: Text("OK"))
-//                                     ],
-//                                   );
-//                                 },);
-//                                     }
+                                // if(_image!=null){
+                                  // if(weii>=45){
+                                    if(c1.text!=null&&c3.text!=null){
+                                        // savedata();
+                                        // edit();
+                                        edt();
+print("KKKKKKKKKKKKK");
+                                        Navigator.pop(context);
+                                    }else{
+                                      showDialog(context: context, builder: (context) {
+                                  return AlertDialog(
+                                    title: Text("OOPS!!!"),
+                                    content: Text("All Input Fields Must Want to Fill...."),
+                                    actions: [
+                                      TextButton(onPressed: () {
+                                        Navigator.pop(context);
+                                      }, child: Text("OK"))
+                                    ],
+                                  );
+                                },);
+                                    }
 
-//                               }else{
-//                                 showDialog(context: context, builder: (context) {
-//                                   return AlertDialog(
-//                                     title: Text("OOPS!!!"),
-//                                     content: Text("You Must Above 18.."),
-//                                     actions: [
-//                                       TextButton(onPressed: () {
-//                                         Navigator.pop(context);
-//                                       }, child: Text("OK"))
-//                                     ],
-//                                   );
-//                                 },);
-//                               }}
-//                               else{
-//                                  showDialog(context: context, builder: (context) {
-//                                   return AlertDialog(
-//                                     title: Text("OOPS!!!"),
-//                                     content: Text("You Must Agree the Terms & Conditions..."),
-//                                     actions: [
-//                                       TextButton(onPressed: () {
-//                                         Navigator.pop(context);
-//                                       }, child: Text("OK"))
-//                                     ],
-//                                   );
-//                                 },);
-//                               }
+                              }else{
+                                showDialog(context: context, builder: (context) {
+                                  return AlertDialog(
+                                    title: Text("OOPS!!!"),
+                                    content: Text("You Must Above 18.."),
+                                    actions: [
+                                      TextButton(onPressed: () {
+                                        Navigator.pop(context);
+                                      }, child: Text("OK"))
+                                    ],
+                                  );
+                                },);
+                              }}
+                              else{
+                                 showDialog(context: context, builder: (context) {
+                                  return AlertDialog(
+                                    title: Text("OOPS!!!"),
+                                    content: Text("You Must Agree the Terms & Conditions..."),
+                                    actions: [
+                                      TextButton(onPressed: () {
+                                        Navigator.pop(context);
+                                      }, child: Text("OK"))
+                                    ],
+                                  );
+                                },);
+                              }
 
 
                           // savedata();

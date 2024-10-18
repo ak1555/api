@@ -32,6 +32,10 @@ void getdata()async{
   });
   print(data);
 }
+void delete(dlt_id) async{
+final res1 = await http.delete(Uri.parse('http://jandk.tech/api/deletedonor/$dlt_id'));
+getdata();
+}
 
 @override
   void initState() {
@@ -169,7 +173,7 @@ void getdata()async{
                     
                          Container(
                           height: 100,
-                          width: 55,
+                          width: 100,
                           child: Column(children: [
                             Container(width: 50,height: 50,
                             decoration: BoxDecoration(borderRadius: BorderRadius.circular(100),color: Colors.red[600]),
@@ -177,14 +181,26 @@ void getdata()async{
                             color: Colors.white,shadows: [Shadow(color: const Color.fromARGB(255, 255, 255, 255),blurRadius: 5,offset: Offset(1, 1))]),),),
                             
                             ),
-                             Container(
-                          height: 50,
-                          width: 50,
-                          child: IconButton(onPressed: () {
-                            String argu=data[index]["_id"].toString();
-                            Navigator.pushNamed(context, "editfile",arguments: argu.toString());
-                          }, icon: Icon(Icons.edit)),
-                         )
+                             Row(
+                               children: [
+                                 Container(
+                                                           height: 50,
+                                                           width: 50,
+                                                           child: IconButton(onPressed: () {
+                                                             String argu=data[index]["_id"].toString();
+                                                             Navigator.pushNamed(context, "editfile",arguments: argu.toString());
+                                                           }, icon: Icon(Icons.edit)),
+                                                          ),
+                                                          Container(
+                                                            height: 50,
+                                                            width: 50,
+                                                            child: IconButton(onPressed: () {
+                                                              delete(data[index]["_id"]);
+                                                              
+                                                            }, icon: Icon(Icons.delete)),
+                                                          )
+                               ],
+                             )
                           ],),
                          ),
                         
